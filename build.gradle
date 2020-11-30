@@ -8,13 +8,13 @@ buildscript {
 	}
 	dependencies {
 		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
-		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_plugin_version}"
 	}
 }
 
 plugins {
 	id "maven"
-	id "com.github.johnrengelman.shadow" version "1.2.3"
+	id "com.github.johnrengelman.shadow" version "4.0.4"
 }
 
 apply plugin: "kotlin"
@@ -63,6 +63,13 @@ dependencies {
 	compile group: "org.jetbrains", name: "annotations", version: annotations_version
 	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
 	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
+
+	//NPC Scripting
+	compile group: "org.jetbrains.kotlin", name: "kotlin-script-runtime", version: kotlin_version
+	compile group: "org.jetbrains.kotlin", name: "kotlin-script-util", version: kotlin_version
+	compile group: "org.jetbrains.kotlin", name: "kotlin-compiler-embeddable", version: kotlin_version
+	compile group: "org.jetbrains.kotlin", name: "kotlin-scripting-compiler-embeddable", version: kotlin_version
+
 }
 
 jar {
@@ -76,12 +83,26 @@ shadowJar {
 	classifier = ""
 	dependencies {
 		include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
+		// MCG Edit: KotlinStdlibCommons
+		include(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
 		include(dependency("org.jetbrains:annotations:${annotations_version}"))
 		include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
 		include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))
+
+		//NPC Scripting
+		include(dependency("org.jetbrains.intellij.deps:trove4j:${trove4j_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-script-runtime:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-script-util:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-compiler-embeddable:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-scripting-common:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-scripting-compiler-impl-embeddable:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-scripting-jvm:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-daemon-client:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-daemon-embeddable:${kotlin_version}"))
 	}
 	manifest {
 		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.preloader.ForgelinPlugin",
@@ -91,6 +112,7 @@ shadowJar {
 
 tasks.build.dependsOn shadowJar
 
+
 artifacts {
 	archives shadowJar
 }
@@ -99,6 +121,10 @@ reobf {
 	shadowJar {
 		mappingType = "SEARGE"
 	}
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
 }
 tasks.reobfShadowJar.mustRunAfter shadowJar
 tasks.build.dependsOn reobfShadowJar
