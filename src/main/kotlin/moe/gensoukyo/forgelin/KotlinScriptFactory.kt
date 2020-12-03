@@ -3,6 +3,7 @@ package moe.gensoukyo.forgelin
 import org.jetbrains.kotlin.cli.common.repl.KotlinJsr223JvmScriptEngineFactoryBase
 import org.jetbrains.kotlin.cli.common.repl.ScriptArgsWithTypes
 import org.jetbrains.kotlin.script.jsr223.KotlinJsr223JvmLocalScriptEngine
+import org.jetbrains.kotlin.script.jsr223.KotlinJsr223JvmLocalScriptEngineFactory
 import org.jetbrains.kotlin.script.jsr223.KotlinStandardJsr223ScriptTemplate
 import javax.script.Bindings
 import javax.script.ScriptContext
@@ -10,8 +11,11 @@ import javax.script.ScriptEngine
 import kotlin.script.experimental.jvm.util.scriptCompilationClasspathFromContext
 
 const val JAR_EXT = ".jar"
-class KotlinScriptFactory : KotlinJsr223JvmScriptEngineFactoryBase() {
 
+/**
+ * @see KotlinJsr223JvmLocalScriptEngineFactory
+ */
+class KotlinScriptFactory : KotlinJsr223JvmScriptEngineFactoryBase() {
     override fun getScriptEngine(): ScriptEngine {
         var jarName = KotlinScriptFactory::class.java.protectionDomain.codeSource.location.file
         jarName = jarName.substring(0, jarName.lastIndexOf(JAR_EXT)) + JAR_EXT

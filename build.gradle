@@ -68,7 +68,9 @@ dependencies {
 	compile group: "org.jetbrains.kotlin", name: "kotlin-script-runtime", version: kotlin_version
 	compile group: "org.jetbrains.kotlin", name: "kotlin-script-util", version: kotlin_version
 	compile group: "org.jetbrains.kotlin", name: "kotlin-compiler-embeddable", version: kotlin_version
-	compile group: "org.jetbrains.kotlin", name: "kotlin-scripting-compiler-embeddable", version: kotlin_version
+	compile group: "org.jetbrains.kotlin", name: "kotlin-scripting-compiler-embeddable", version: kotlin_version// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-scripting-jsr223
+	//compile group: 'org.jetbrains.kotlin', name: 'kotlin-scripting-jsr223', version: '1.4.20'
+
 
 }
 
@@ -101,6 +103,7 @@ shadowJar {
 		include(dependency("org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-scripting-compiler-impl-embeddable:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-scripting-jvm:${kotlin_version}"))
+		//include(dependency("org.jetbrains.kotlin:kotlin-scripting-jsr223:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-daemon-client:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-daemon-embeddable:${kotlin_version}"))
 	}
